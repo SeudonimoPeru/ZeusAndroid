@@ -1,5 +1,6 @@
 package solis.jhon.pokezeus.data.network
 
+import kotlinx.coroutines.flow.Flow
 import retrofit2.http.GET
 import retrofit2.http.Query
 import retrofit2.http.Path
@@ -16,12 +17,12 @@ interface PokemonService {
     suspend fun pokemonList(
         @Query("limit") limit: Int = 25,
         @Query("offset") offset: Int = 0,
-    ): PokemonListResponse
+    ): Flow<PokemonListResponse>
 
     @GET("/{next}")
-    suspend fun pokemonNextList(
+    suspend fun pokemonNextPage(
         @Path("next") nextPage: String
-    ): PokemonListResponse
+    ): Flow<PokemonListResponse>
 
     @GET("/pokemon/{name}")
     suspend fun pokemonDetail(@Path("name") name: String): PokemonDetailResponse

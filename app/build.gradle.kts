@@ -44,6 +44,12 @@ android {
     kotlinOptions {
         jvmTarget = "1.8"
     }
+    viewBinding {
+        enable = true
+    }
+    dataBinding {
+        enable = true
+    }
 }
 
 dependencies {
@@ -71,6 +77,7 @@ dependencies {
 
     //Navigation Component
     implementation("androidx.navigation:navigation-compose:2.7.5")
+    implementation("androidx.navigation:navigation-ui:2.7.5")
 
     //LiveData-State
     implementation("androidx.compose.runtime:runtime-livedata:1.5.4")

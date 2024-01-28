@@ -1,10 +1,12 @@
 package solis.jhon.pokezeus.data.database.entity
 
 import androidx.room.Entity
+import androidx.room.PrimaryKey
 
-@Entity(tableName = "pokemonDetail")
+@Entity(tableName = "pokemon_detail")
 data class PokemonDetailEntity (
-    val id: Int? = 0,
+    @PrimaryKey(autoGenerate = true)
+    val id: Int = 0,
     val name: String? = null,
     val image: String? = null,
     val height: Int? = 0,

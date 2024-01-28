@@ -1,19 +1,24 @@
 package solis.jhon.pokezeus.domain.repository
 
 import kotlinx.coroutines.flow.Flow
-import solis.jhon.pokezeus.data.network.model.PokemonDetailResponse
 import solis.jhon.pokezeus.data.network.model.PokemonListResponse
-import solis.jhon.pokezeus.domain.model.PokemonDetailModel
-import solis.jhon.pokezeus.domain.model.PokemonModel
 
 interface PokemonRepository {
 
-    fun pokemonList(limit: Int, offset: Int): Flow<PokemonListResponse>
+    suspend fun pokemonList(): Flow<PokemonListResponse>
 
-    fun pokemonListOffline(limit: Int, offset: Int): Flow<List<PokemonModel>>
+    suspend fun pokemonList(nextPage: String): Flow<PokemonListResponse>
 
-    fun pokemonDetail(name: String): Flow<PokemonDetailResponse>
+    suspend fun savePokemonList(data: PokemonListResponse)
 
-    fun pokemonDetailOffline(name: String): Flow<PokemonDetailModel>
+    suspend fun getPokemonList(limit: Int, offset: Int): PokemonListResponse
+
+    /*suspend fun pokemonNextPage(nextPage: String): PokemonListResponse
+
+    suspend fun pokemonListOffline(limit: Int, offset: Int): List<PokemonModel>
+
+    suspend fun pokemonDetail(name: String): PokemonDetailResponse
+
+    suspend fun pokemonDetailOffline(name: String): PokemonDetail*/
 
 }

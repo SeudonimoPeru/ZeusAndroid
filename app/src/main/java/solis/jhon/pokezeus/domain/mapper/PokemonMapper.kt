@@ -1,24 +1,38 @@
 package solis.jhon.pokezeus.domain.mapper
 
-import solis.jhon.pokezeus.data.database.entity.PokemonDetailEntity
 import solis.jhon.pokezeus.data.database.entity.PokemonEntity
-import solis.jhon.pokezeus.data.network.model.PokemonDetailResponse
+import solis.jhon.pokezeus.data.network.model.PokemonListResponse
 import solis.jhon.pokezeus.data.network.model.PokemonResponse
-import solis.jhon.pokezeus.domain.model.PokemonDetailModel
+import solis.jhon.pokezeus.domain.model.PokemonListModel
 import solis.jhon.pokezeus.domain.model.PokemonModel
+
+fun PokemonListResponse.toDomain() = PokemonListModel(
+    next = next,
+    results = results?.map { it.toDomain() }
+)
+
+fun PokemonResponse.toDomain() = PokemonModel(
+    name = name,
+    url = url,
+    favorite = false
+)
 
 fun PokemonResponse.asEntity() = PokemonEntity(
     name = name,
     url = url
 )
-
+/*
 fun PokemonEntity.toDomain() = PokemonModel(
-    id = id,
     name = name,
     url = url,
     favorite = favorite
 )
-
+*/
+fun PokemonEntity.toResponse() = PokemonResponse(
+    name = name,
+    url = url
+)
+/*
 fun PokemonDetailResponse.asEntity() = PokemonDetailEntity(
     id = id,
     name = name,
@@ -35,4 +49,4 @@ fun PokemonDetailEntity.toDomain() = PokemonDetailModel(
     weight = weight,
     experience = experience,
     image = image
-)
+)*/
