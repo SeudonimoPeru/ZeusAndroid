@@ -4,4 +4,8 @@
     <string name="title_initials_color">Seleccione el color para las iniciales</string>
     <string name="button_continue">Continuar</string>
     <string name="seekBar_select_color">Seleccionar Color</string>
+    <string name="pokemon_detail_height">Altura :</string>
+    <string name="pokemon_detail_weight">Peso:</string>
+    <string name="pokemon_detail_types">Tipos de pokemon:</string>
+    <string name="pokemon_detail_favorite">Favorito</string>
 </resources>

@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import dagger.hilt.android.AndroidEntryPoint
 import solis.jhon.pokezeus.databinding.FragmentPokemonListBinding
+import solis.jhon.pokezeus.presentation.feature.detail.PokemonDetailFragment
 import solis.jhon.pokezeus.presentation.feature.home.adapter.PokemonAdapter
 
 @AndroidEntryPoint
@@ -45,7 +46,7 @@ class PokemonListFragment : Fragment() {
     private fun setupViews(binding: FragmentPokemonListBinding) {
         binding.apply {
             rvPokemonList.apply {
-                viewModel._adapterPokemon = PokemonAdapter(this.context, backgroundColorSelected, initialsColorSelected)
+                viewModel._adapterPokemon = PokemonAdapter(::showPokemonDetail, this.context, backgroundColorSelected, initialsColorSelected)
                 this.adapter = viewModel._adapterPokemon
                 this.layoutManager = GridLayoutManager(context, 2, RecyclerView.VERTICAL, false)
             }
@@ -75,9 +76,14 @@ class PokemonListFragment : Fragment() {
             backgroundColorSelected = it.getInt("backgroundColor", 0)
             initialsColorSelected = it.getInt("initialsColor", 0)
         }
-        Log.i("backgroundColorSelected: ", backgroundColorSelected.toString())
-        //viewModel.backgroundColorSelected.value = backgroundColorSelected
-        Log.i("initialsColorSelected: ", initialsColorSelected.toString())
-        //viewModel.initialsColorSelected.value = initialsColorSelected
+    }
+
+    private fun showPokemonDetail(name: String) {
+        Log.i("**** name: ", name)
+        Log.i("**** backgroundColorSelected: ", backgroundColorSelected.toString())
+        PokemonDetailFragment(name, backgroundColorSelected, initialsColorSelected).show(
+            parentFragmentManager,
+            "DialogPokemonDetail"
+        )
     }
 }

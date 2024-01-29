@@ -19,14 +19,13 @@ import solis.jhon.pokezeus.domain.utils.applyOpacity
 import solis.jhon.pokezeus.domain.utils.twoFirstLetter
 
 class PokemonAdapter(
-    //val callback: () -> Unit,
+    val callback: (name: String) -> Unit,
     val context: Context,
     val backgroundColorSelected: Int,
     val initialsColorSelected: Int,
 ) : RecyclerView.Adapter<PokemonAdapter.PokemonViewHolder>() {
 
     private val items = mutableListOf<PokemonModel>()
-    var onEndOfListReached: (() -> Unit)? = null
 
     @SuppressLint("NotifyDataSetChanged")
     fun bindItems(nItems: List<PokemonModel>) {
@@ -69,7 +68,15 @@ class PokemonAdapter(
         fun bind(data: PokemonModel) {
             binding.apply {
                 pokemon = data
-                cvPokemon.setCardBackgroundColor(backgroundColorSelected)
+                var backgroundColor = context.getColor(R.color.md_theme_primaryContainer)
+
+                if(backgroundColorSelected > 0) {
+                    backgroundColor = backgroundColorSelected
+                }
+                backgroundColor.let { cvPokemon.setCardBackgroundColor(it) }
+                cvPokemon.setOnClickListener {
+                    callback(data.name.toString())
+                }
                 if (data.image.isNullOrEmpty()) {
                     createImageWithInitials(data.name)
                 } else {

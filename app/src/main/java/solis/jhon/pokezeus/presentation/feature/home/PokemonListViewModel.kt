@@ -1,6 +1,5 @@
 package solis.jhon.pokezeus.presentation.feature.home
 
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -25,6 +24,7 @@ class PokemonListViewModel @Inject constructor(private val useCase: PokemonUseCa
     init {
         loadData()
     }
+
     fun loadData() {
         viewModelScope.launch {
             useCase.invoke(nextPage.value.toString()).collect {

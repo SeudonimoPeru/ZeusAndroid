@@ -13,14 +13,16 @@ import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import solis.jhon.pokezeus.data.database.DataBase
-import solis.jhon.pokezeus.data.database.PokemonDao
+import solis.jhon.pokezeus.data.database.datasource.PokemonDao
+import solis.jhon.pokezeus.data.database.datasource.PokemonDetailDao
 import solis.jhon.pokezeus.data.network.PokemonService
 import solis.jhon.pokezeus.data.repository.PokemonRepositoryImpl
 import solis.jhon.pokezeus.domain.repository.PokemonRepository
+import solis.jhon.pokezeus.domain.usecase.PokemonDetailUseCase
 import solis.jhon.pokezeus.domain.usecase.PokemonUseCase
+import solis.jhon.pokezeus.presentation.factory.PokemonDetailViewModelFactory
 import solis.jhon.pokezeus.presentation.factory.PokemonViewModelFactory
 import javax.inject.Singleton
-
 
 @InstallIn(SingletonComponent::class)
 @Module
@@ -72,18 +74,34 @@ class AppModule {
     }
 
     @Provides
-    fun provideRepository(apiService: PokemonService, dao: PokemonDao): PokemonRepository {
-        return PokemonRepositoryImpl(apiService, dao)
+    @Singleton
+    fun providePokemonDetailDao(database: DataBase): PokemonDetailDao {
+        return database.pokemonDetailDao()
     }
 
     @Provides
-    fun provideUseCase(repository: PokemonRepository, context: Context): PokemonUseCase {
+    fun provideRepository(apiService: PokemonService, pokemonDao: PokemonDao, pokemonDetailDao: PokemonDetailDao): PokemonRepository {
+        return PokemonRepositoryImpl(apiService, pokemonDao, pokemonDetailDao)
+    }
+
+    @Provides
+    fun providePokemonUseCase(repository: PokemonRepository, context: Context): PokemonUseCase {
         return PokemonUseCase(repository, context)
     }
 
     @Provides
-    fun provideViewModelFactory(useCase: PokemonUseCase): ViewModelProvider.Factory {
+    fun providePokemonDetailUseCase(repository: PokemonRepository, context: Context): PokemonDetailUseCase {
+        return PokemonDetailUseCase(repository, context)
+    }
+
+    @Provides
+    fun providePokemonViewModelFactory(useCase: PokemonUseCase): ViewModelProvider.Factory {
         return PokemonViewModelFactory(useCase)
+    }
+
+    @Provides
+    fun providePokemonDetailViewModelFactory(useCase: PokemonDetailUseCase): ViewModelProvider.Factory {
+        return PokemonDetailViewModelFactory(useCase)
     }
 
 }

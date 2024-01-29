@@ -7,6 +7,6 @@ data class PokemonDetailModel (
     val weight: Int?,
     val experience: Int?,
     val image : String?,
-    val imageDefatult : String?,
-    val types : List<String>?
+    val imageDefault : String?,
+    val types : String?
 )

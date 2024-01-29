@@ -2,6 +2,8 @@ package solis.jhon.pokezeus.data.database
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
+import solis.jhon.pokezeus.data.database.datasource.PokemonDao
+import solis.jhon.pokezeus.data.database.datasource.PokemonDetailDao
 import solis.jhon.pokezeus.data.database.entity.PokemonDetailEntity
 import solis.jhon.pokezeus.data.database.entity.PokemonEntity
 
@@ -13,4 +15,6 @@ abstract class DataBase : RoomDatabase(){
     }
 
     abstract fun pokemonDao() : PokemonDao
+    abstract fun pokemonDetailDao() : PokemonDetailDao
+
 }
