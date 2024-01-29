@@ -5,6 +5,7 @@ import solis.jhon.pokezeus.data.network.model.PokemonListResponse
 import solis.jhon.pokezeus.data.network.model.PokemonResponse
 import solis.jhon.pokezeus.domain.model.PokemonListModel
 import solis.jhon.pokezeus.domain.model.PokemonModel
+import solis.jhon.pokezeus.domain.utils.replaceBaseUrlImage
 
 fun PokemonListResponse.toDomain() = PokemonListModel(
     next = next,
@@ -14,6 +15,7 @@ fun PokemonListResponse.toDomain() = PokemonListModel(
 fun PokemonResponse.toDomain() = PokemonModel(
     name = name,
     url = url,
+    image = url?.replaceBaseUrlImage(),
     favorite = false
 )
 

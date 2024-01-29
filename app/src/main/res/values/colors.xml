@@ -1,4 +1,6 @@
 <resources>
+
+    <color name="background_progress">#4D000000</color>
     <color name="md_theme_primary">#904A44</color>
     <color name="md_theme_onPrimary">#FFFFFF</color>
     <color name="md_theme_primaryContainer">#FFDAD6</color>

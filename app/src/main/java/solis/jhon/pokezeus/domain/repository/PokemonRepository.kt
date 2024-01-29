@@ -7,7 +7,7 @@ interface PokemonRepository {
 
     suspend fun pokemonList(): Flow<PokemonListResponse>
 
-    suspend fun pokemonList(nextPage: String): Flow<PokemonListResponse>
+    suspend fun pokemonList(offset: String): Flow<PokemonListResponse>
 
     suspend fun savePokemonList(data: PokemonListResponse)
 

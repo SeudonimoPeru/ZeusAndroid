@@ -10,17 +10,13 @@ interface PokemonService {
 
     companion object {
         const val BASE_URL = "https://pokeapi.co/api/v2/"
+        const val IMAGE_BASE_URL = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/"
     }
 
     @GET("pokemon")
     suspend fun pokemonList(
         @Query("limit") limit: Int = 25,
         @Query("offset") offset: Int = 0,
-    ): PokemonListResponse
-
-    @GET("{next}")
-    suspend fun pokemonNextPage(
-        @Path("next") nextPage: String
     ): PokemonListResponse
 
     @GET("pokemon/{name}")

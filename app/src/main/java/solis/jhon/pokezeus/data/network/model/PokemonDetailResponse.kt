@@ -14,12 +14,26 @@ data class PokemonDetailResponse(
     @SerializedName("base_experience")
     val experience: Int?,
     @SerializedName("sprites")
-    val sprites: SpritesResponse?
+    val sprites: SpritesResponse?,
+    @SerializedName("types")
+    val types: List<TypeResponse>?
 )
 
 data class SpritesResponse(
     @SerializedName("other")
-    val other: OtherResponse?
+    val other: OtherResponse?,
+    @SerializedName("front_default")
+    val frontDefault: String?
+)
+
+data class TypeResponse(
+    @SerializedName("type")
+    val type: TypeItemResponse?
+)
+
+data class TypeItemResponse(
+    @SerializedName("name")
+    val name: String?
 )
 
 data class OtherResponse(

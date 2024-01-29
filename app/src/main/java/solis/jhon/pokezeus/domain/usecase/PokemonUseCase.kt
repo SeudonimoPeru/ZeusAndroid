@@ -3,13 +3,13 @@ package solis.jhon.pokezeus.domain.usecase
 import android.content.Context
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.flow
 import solis.jhon.pokezeus.domain.mapper.toDomain
 import solis.jhon.pokezeus.domain.model.PokemonListModel
 import solis.jhon.pokezeus.domain.repository.PokemonRepository
 import solis.jhon.pokezeus.domain.utils.ResultType
 import solis.jhon.pokezeus.domain.utils.defaultIfEmpty
+import solis.jhon.pokezeus.domain.utils.getOffset
 import solis.jhon.pokezeus.domain.utils.isInternetAvailable
 import javax.inject.Inject
 
@@ -28,7 +28,7 @@ class PokemonUseCase @Inject constructor(
                         emit(ResultType.Success(data.toDomain()))
                     }
                 } else {
-                    pokemonRepository.pokemonList(nextPage).collect { data ->
+                    pokemonRepository.pokemonList(nextPage.getOffset()).collect { data ->
                         pokemonRepository.savePokemonList(data)
                         emit(ResultType.Success(data.toDomain()))
                     }

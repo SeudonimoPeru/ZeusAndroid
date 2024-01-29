@@ -7,9 +7,12 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import dagger.hilt.android.AndroidEntryPoint
 import solis.jhon.pokezeus.databinding.FragmentPokemonListBinding
-import solis.jhon.pokezeus.domain.utils.ResultType
+import solis.jhon.pokezeus.presentation.feature.home.adapter.PokemonAdapter
 
 @AndroidEntryPoint
 class PokemonListFragment : Fragment() {
@@ -23,34 +26,47 @@ class PokemonListFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         val binding = FragmentPokemonListBinding.inflate(inflater, container, false)
+        setupValues()
         setupObservers(binding)
         setupViews(binding)
-        setupValues()
         return binding.root
     }
 
     private fun setupObservers(binding: FragmentPokemonListBinding) {
-        viewModel.dataState.observe(viewLifecycleOwner) { result ->
-            when (result) {
-                is ResultType.Loading -> {
-                    binding.tvResult.text = "Loading..."
-                }
-                is ResultType.Success -> {
-                    val data = result.data
-                    binding.tvResult.text = "Data loaded: $data"
-                }
-                is ResultType.Error -> {
-                    val error = result.exception
-                    Log.e("Error: ", error.message.toString())
-                    binding.tvResult.text = "Error: $error"
-                }
+        viewModel.loading.observe(viewLifecycleOwner) {
+            if (it) {
+                binding.llLoading.visibility = View.VISIBLE
+            } else {
+                binding.llLoading.visibility = View.GONE
             }
         }
     }
 
     private fun setupViews(binding: FragmentPokemonListBinding) {
-        binding.btnLoadData.setOnClickListener {
-            viewModel.loadData()
+        binding.apply {
+            rvPokemonList.apply {
+                viewModel._adapterPokemon = PokemonAdapter(this.context, backgroundColorSelected, initialsColorSelected)
+                this.adapter = viewModel._adapterPokemon
+                this.layoutManager = GridLayoutManager(context, 2, RecyclerView.VERTICAL, false)
+            }
+            rvPokemonList.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+
+                override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                    super.onScrolled(recyclerView, dx, dy)
+
+                    val visibleItemCount = rvPokemonList.layoutManager?.childCount ?: 0
+                    val totalItemCount = rvPokemonList.layoutManager?.itemCount ?: 0
+                    val firstVisibleItemPosition = (rvPokemonList.layoutManager as LinearLayoutManager).findFirstVisibleItemPosition()
+
+                    if ((visibleItemCount + firstVisibleItemPosition) >= totalItemCount
+                        && firstVisibleItemPosition >= 0
+                        && totalItemCount >= 25
+                    ) {
+                        viewModel.loadData()
+                    }
+                }
+
+            })
         }
     }
 
@@ -60,6 +76,8 @@ class PokemonListFragment : Fragment() {
             initialsColorSelected = it.getInt("initialsColor", 0)
         }
         Log.i("backgroundColorSelected: ", backgroundColorSelected.toString())
+        //viewModel.backgroundColorSelected.value = backgroundColorSelected
         Log.i("initialsColorSelected: ", initialsColorSelected.toString())
+        //viewModel.initialsColorSelected.value = initialsColorSelected
     }
 }

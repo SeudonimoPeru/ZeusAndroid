@@ -1,5 +1,6 @@
 package solis.jhon.pokezeus.data.repository
 
+import android.util.Log
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -10,6 +11,8 @@ import solis.jhon.pokezeus.data.network.model.PokemonListResponse
 import solis.jhon.pokezeus.domain.mapper.asEntity
 import solis.jhon.pokezeus.domain.mapper.toResponse
 import solis.jhon.pokezeus.domain.repository.PokemonRepository
+import java.net.URLEncoder
+import java.nio.charset.StandardCharsets
 import javax.inject.Inject
 
 class PokemonRepositoryImpl @Inject constructor(
@@ -21,8 +24,8 @@ class PokemonRepositoryImpl @Inject constructor(
         emit(pokemonService.pokemonList())
     }.flowOn(Dispatchers.IO)
 
-    override suspend fun pokemonList(nextPage: String): Flow<PokemonListResponse> = flow {
-        emit(pokemonService.pokemonNextPage(nextPage))
+    override suspend fun pokemonList(offset: String): Flow<PokemonListResponse> = flow {
+        emit(pokemonService.pokemonList(offset = offset.toInt()))
     }.flowOn(Dispatchers.IO)
 
     override suspend fun savePokemonList(data: PokemonListResponse) {
@@ -31,7 +34,7 @@ class PokemonRepositoryImpl @Inject constructor(
     }
 
     override suspend fun getPokemonList(limit: Int, offset: Int): Flow<PokemonListResponse> = flow {
-        emit(PokemonListResponse(count = null, next = null, previous = null , results = pokemonDao.getPokemon(limit, offset)
+        emit(PokemonListResponse(count = null, next = (offset + 1).toString(), previous = null , results = pokemonDao.getPokemon(limit, offset)
             ?.map { it.toResponse() }))
     }.flowOn(Dispatchers.IO)
 
