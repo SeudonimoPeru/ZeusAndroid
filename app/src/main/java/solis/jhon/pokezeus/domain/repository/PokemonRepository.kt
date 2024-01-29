@@ -11,6 +11,6 @@ interface PokemonRepository {
 
     suspend fun savePokemonList(data: PokemonListResponse)
 
-    suspend fun getPokemonList(limit: Int, offset: Int): PokemonListResponse
+    suspend fun getPokemonList(limit: Int, offset: Int): Flow<PokemonListResponse>
 
 }

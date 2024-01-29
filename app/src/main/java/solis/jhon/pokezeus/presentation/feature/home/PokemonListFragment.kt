@@ -15,6 +15,8 @@ import solis.jhon.pokezeus.domain.utils.ResultType
 class PokemonListFragment : Fragment() {
 
     private val viewModel: PokemonListViewModel by viewModels()
+    private var backgroundColorSelected = 0
+    private var initialsColorSelected = 0
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -23,6 +25,7 @@ class PokemonListFragment : Fragment() {
         val binding = FragmentPokemonListBinding.inflate(inflater, container, false)
         setupObservers(binding)
         setupViews(binding)
+        setupValues()
         return binding.root
     }
 
@@ -49,5 +52,14 @@ class PokemonListFragment : Fragment() {
         binding.btnLoadData.setOnClickListener {
             viewModel.loadData()
         }
+    }
+
+    private fun setupValues() {
+        arguments?.let {
+            backgroundColorSelected = it.getInt("backgroundColor", 0)
+            initialsColorSelected = it.getInt("initialsColor", 0)
+        }
+        Log.i("backgroundColorSelected: ", backgroundColorSelected.toString())
+        Log.i("initialsColorSelected: ", initialsColorSelected.toString())
     }
 }

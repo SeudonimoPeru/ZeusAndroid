@@ -3,13 +3,34 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/pokemonListFragment">
+    app:startDestination="@id/settingFragment">
+
+    <fragment
+        android:id="@+id/settingFragment"
+        android:name="solis.jhon.pokezeus.presentation.feature.setting.SettingColorFragment"
+        android:label="Setting Fragment"
+        tools:layout="@layout/fragment_setting_color">
+
+        <action
+            android:id="@+id/actionSettingFragmentToPokemonListFragment"
+            app:destination="@id/pokemonListFragment" />
+
+    </fragment>
 
     <fragment
         android:id="@+id/pokemonListFragment"
         android:name="solis.jhon.pokezeus.presentation.feature.home.PokemonListFragment"
         android:label="Pokemon Fragment"
         tools:layout="@layout/fragment_pokemon_list">
+
+        <argument
+            android:name="backgroundColor"
+            app:argType="integer" />
+
+        <argument
+            android:name="initialsColor"
+            app:argType="integer" />
+
     </fragment>
 
 </navigation>

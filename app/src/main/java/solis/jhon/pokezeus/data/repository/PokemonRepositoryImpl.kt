@@ -30,9 +30,9 @@ class PokemonRepositoryImpl @Inject constructor(
             pokemonDao.savePokemons(list.map { it.asEntity() }) }
     }
 
-    override suspend fun getPokemonList(limit: Int, offset: Int): PokemonListResponse {
-        return PokemonListResponse(count = null, next = null, previous = null , results = pokemonDao.getPokemon(limit, offset)
-            ?.map { it.toResponse() })
-    }
+    override suspend fun getPokemonList(limit: Int, offset: Int): Flow<PokemonListResponse> = flow {
+        emit(PokemonListResponse(count = null, next = null, previous = null , results = pokemonDao.getPokemon(limit, offset)
+            ?.map { it.toResponse() }))
+    }.flowOn(Dispatchers.IO)
 
 }
