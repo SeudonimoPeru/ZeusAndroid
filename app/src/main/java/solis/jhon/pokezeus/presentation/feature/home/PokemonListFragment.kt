@@ -1,6 +1,7 @@
 package solis.jhon.pokezeus.presentation.feature.home
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -37,6 +38,7 @@ class PokemonListFragment : Fragment() {
                 }
                 is ResultType.Error -> {
                     val error = result.exception
+                    Log.e("Error: ", error.message.toString())
                     binding.tvResult.text = "Error: $error"
                 }
             }

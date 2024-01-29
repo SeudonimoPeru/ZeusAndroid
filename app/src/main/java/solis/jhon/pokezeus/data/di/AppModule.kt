@@ -3,6 +3,7 @@ package solis.jhon.pokezeus.data.di
 import android.app.Application
 import android.content.Context
 import androidx.lifecycle.ViewModelProvider
+import androidx.room.Room
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -11,6 +12,7 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import solis.jhon.pokezeus.data.database.DataBase
 import solis.jhon.pokezeus.data.database.PokemonDao
 import solis.jhon.pokezeus.data.network.PokemonService
 import solis.jhon.pokezeus.data.repository.PokemonRepositoryImpl
@@ -31,7 +33,13 @@ class AppModule {
     }
 
     @Provides
-    fun provideApiService(): PokemonService {
+    @Singleton
+    fun provideGsonConverterFactory(): GsonConverterFactory = GsonConverterFactory.create()
+
+    @Provides
+    fun provideApiService(
+        gsonConverterFactory: GsonConverterFactory,
+    ): PokemonService {
         val interceptor = HttpLoggingInterceptor()
         interceptor.level = HttpLoggingInterceptor.Level.BODY
 
@@ -41,10 +49,26 @@ class AppModule {
 
         return Retrofit.Builder()
             .baseUrl(PokemonService.BASE_URL)
+            .addConverterFactory(gsonConverterFactory)
             .client(client)
-            .addConverterFactory(GsonConverterFactory.create())
             .build()
             .create(PokemonService::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun provideDataBase(application: Application): DataBase {
+        return Room.databaseBuilder(
+            application,
+            DataBase::class.java,
+            DataBase.DATABASE_NAME
+        ).build()
+    }
+
+    @Provides
+    @Singleton
+    fun providePokemonDao(database: DataBase): PokemonDao {
+        return database.pokemonDao()
     }
 
     @Provides

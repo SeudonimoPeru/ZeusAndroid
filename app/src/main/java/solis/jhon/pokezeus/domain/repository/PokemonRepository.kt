@@ -13,12 +13,4 @@ interface PokemonRepository {
 
     suspend fun getPokemonList(limit: Int, offset: Int): PokemonListResponse
 
-    /*suspend fun pokemonNextPage(nextPage: String): PokemonListResponse
-
-    suspend fun pokemonListOffline(limit: Int, offset: Int): List<PokemonModel>
-
-    suspend fun pokemonDetail(name: String): PokemonDetailResponse
-
-    suspend fun pokemonDetailOffline(name: String): PokemonDetail*/
-
 }

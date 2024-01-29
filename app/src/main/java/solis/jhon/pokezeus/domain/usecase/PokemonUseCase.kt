@@ -40,4 +40,5 @@ class PokemonUseCase @Inject constructor(
         }
     }.catch { e -> emit(ResultType.Error(e as Exception)) }
 
+
 }

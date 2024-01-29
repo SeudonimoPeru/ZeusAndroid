@@ -21,32 +21,8 @@ fun PokemonResponse.asEntity() = PokemonEntity(
     name = name,
     url = url
 )
-/*
-fun PokemonEntity.toDomain() = PokemonModel(
-    name = name,
-    url = url,
-    favorite = favorite
-)
-*/
+
 fun PokemonEntity.toResponse() = PokemonResponse(
     name = name,
     url = url
 )
-/*
-fun PokemonDetailResponse.asEntity() = PokemonDetailEntity(
-    id = id,
-    name = name,
-    image = sprites?.other?.dream?.front,
-    height = height,
-    weight = weight,
-    experience = experience,
-)
-
-fun PokemonDetailEntity.toDomain() = PokemonDetailModel(
-    id = id,
-    name = name,
-    height = height,
-    weight = weight,
-    experience = experience,
-    image = image
-)*/
