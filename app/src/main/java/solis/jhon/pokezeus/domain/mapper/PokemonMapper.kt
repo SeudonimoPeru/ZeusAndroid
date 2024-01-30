@@ -20,7 +20,7 @@ fun PokemonResponse.toDomain() = PokemonModel(
     name = name,
     url = url,
     image = url?.replaceBaseUrlImage(),
-    favorite = false
+    favorite = favorite
 )
 
 fun PokemonResponse.asEntity() = PokemonEntity(
@@ -30,7 +30,14 @@ fun PokemonResponse.asEntity() = PokemonEntity(
 
 fun PokemonEntity.toResponse() = PokemonResponse(
     name = name,
-    url = url
+    url = url,
+    favorite = favorite
+)
+
+fun PokemonModel.asEntity() = PokemonEntity(
+    name = name,
+    url = url,
+    favorite = favorite
 )
 
 fun PokemonDetailResponse.asEntity() = PokemonDetailEntity(

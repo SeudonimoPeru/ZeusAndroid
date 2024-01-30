@@ -19,7 +19,7 @@ import solis.jhon.pokezeus.domain.utils.applyOpacity
 import solis.jhon.pokezeus.domain.utils.twoFirstLetter
 
 class PokemonAdapter(
-    val callback: (name: String) -> Unit,
+    val callback: (pokemon: PokemonModel) -> Unit,
     val context: Context,
     val backgroundColorSelected: Int,
     val initialsColorSelected: Int,
@@ -75,7 +75,7 @@ class PokemonAdapter(
                 }
                 backgroundColor.let { cvPokemon.setCardBackgroundColor(it) }
                 cvPokemon.setOnClickListener {
-                    callback(data.name.toString())
+                    callback(data)
                 }
                 if (data.image.isNullOrEmpty()) {
                     createImageWithInitials(data.name)

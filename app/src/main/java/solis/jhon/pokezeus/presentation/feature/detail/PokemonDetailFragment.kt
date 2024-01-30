@@ -18,12 +18,14 @@ import com.bumptech.glide.request.target.Target
 import dagger.hilt.android.AndroidEntryPoint
 import solis.jhon.pokezeus.R
 import solis.jhon.pokezeus.databinding.FragmentPokemonDetailBinding
+import solis.jhon.pokezeus.domain.model.PokemonModel
 import solis.jhon.pokezeus.domain.utils.applyOpacity
 import solis.jhon.pokezeus.domain.utils.twoFirstLetter
 
 @AndroidEntryPoint
 class PokemonDetailFragment(
-    private val name: String,
+    private var pokemon: PokemonModel,
+    val callback: () -> Unit,
     private val backgroundColorSelected: Int,
     private val initialsColorSelected: Int) : DialogFragment() {
 
@@ -51,7 +53,7 @@ class PokemonDetailFragment(
     }
 
     private fun setupObservers(binding: FragmentPokemonDetailBinding) {
-        viewModel.name.value = name
+        viewModel.name.value = pokemon.name
         viewModel.loading.observe(viewLifecycleOwner) {
             if (it) {
                 binding.llLoading.visibility = View.VISIBLE
@@ -60,15 +62,15 @@ class PokemonDetailFragment(
             }
         }
 
-        viewModel.pokemonDetail.observe(viewLifecycleOwner) { pokemon ->
+        viewModel.pokemonDetail.observe(viewLifecycleOwner) { pokemonDetail ->
             binding.apply {
-                if (pokemon?.imageDefault.isNullOrEmpty()) {
-                    createImageWithInitials(pokemon?.name, binding)
+                if (pokemonDetail?.imageDefault.isNullOrEmpty()) {
+                    createImageWithInitials(pokemonDetail?.name, binding)
                 } else {
                     tvInitialsPokemon.visibility = View.GONE
                     context?.let {
                         Glide.with(it)
-                            .load(pokemon?.imageDefault)
+                            .load(pokemonDetail?.imageDefault)
                             .placeholder(R.drawable.placeholder_default)
                             .listener(object : RequestListener<Drawable?> {
                                 override fun onLoadFailed(
@@ -78,7 +80,7 @@ class PokemonDetailFragment(
                                     isFirstResource: Boolean
                                 ): Boolean {
                                     tvInitialsPokemon.visibility = View.VISIBLE
-                                    createImageWithInitials(pokemon?.name, binding)
+                                    createImageWithInitials(pokemonDetail?.name, binding)
                                     return false
                                 }
 
@@ -95,10 +97,11 @@ class PokemonDetailFragment(
                             .into(ivPokemon)
                     }
                 }
-                tvName.text = pokemon?.name
-                tvHeight.text = pokemon?.height.toString()
-                tvWeight.text = pokemon?.weight.toString()
-                tvTypes.text = pokemon?.types
+                tvName.text = pokemonDetail?.name
+                tvHeight.text = pokemonDetail?.height.toString()
+                tvWeight.text = pokemonDetail?.weight.toString()
+                tvTypes.text = pokemonDetail?.types
+                tbFavorite.isChecked = pokemon.favorite
             }
         }
         viewModel.loadData()
@@ -111,8 +114,15 @@ class PokemonDetailFragment(
         }
         backgroundColor?.let { binding.cvDetail.setBackgroundColor(it) }
         isCancelable = false
-        binding.ivClose.setOnClickListener {
-            dismiss()
+        binding.apply {
+            ivClose.setOnClickListener {
+                callback()
+                dismiss()
+            }
+            tbFavorite.setOnCheckedChangeListener { buttonView, isChecked ->
+                pokemon.favorite = isChecked
+                viewModel.updatePokemon(pokemon)
+            }
         }
     }
 

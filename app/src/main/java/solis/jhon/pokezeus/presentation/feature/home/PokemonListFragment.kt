@@ -1,7 +1,6 @@
 package solis.jhon.pokezeus.presentation.feature.home
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,6 +11,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import dagger.hilt.android.AndroidEntryPoint
 import solis.jhon.pokezeus.databinding.FragmentPokemonListBinding
+import solis.jhon.pokezeus.domain.model.PokemonModel
 import solis.jhon.pokezeus.presentation.feature.detail.PokemonDetailFragment
 import solis.jhon.pokezeus.presentation.feature.home.adapter.PokemonAdapter
 
@@ -78,12 +78,15 @@ class PokemonListFragment : Fragment() {
         }
     }
 
-    private fun showPokemonDetail(name: String) {
-        Log.i("**** name: ", name)
-        Log.i("**** backgroundColorSelected: ", backgroundColorSelected.toString())
-        PokemonDetailFragment(name, backgroundColorSelected, initialsColorSelected).show(
+    private fun showPokemonDetail(pokemon: PokemonModel) {
+        PokemonDetailFragment(pokemon, ::reloadPokemonList, backgroundColorSelected, initialsColorSelected).show(
             parentFragmentManager,
             "DialogPokemonDetail"
         )
+    }
+
+    private fun reloadPokemonList() {
+        viewModel.nextPage.value = ""
+        viewModel.loadData()
     }
 }

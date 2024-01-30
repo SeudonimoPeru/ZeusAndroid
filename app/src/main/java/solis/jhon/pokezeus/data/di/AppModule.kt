@@ -100,8 +100,8 @@ class AppModule {
     }
 
     @Provides
-    fun providePokemonDetailViewModelFactory(useCase: PokemonDetailUseCase): ViewModelProvider.Factory {
-        return PokemonDetailViewModelFactory(useCase)
+    fun providePokemonDetailViewModelFactory(pokemonUseCase: PokemonUseCase, pokemonDetailUseCase: PokemonDetailUseCase): ViewModelProvider.Factory {
+        return PokemonDetailViewModelFactory(pokemonUseCase, pokemonDetailUseCase)
     }
 
 }

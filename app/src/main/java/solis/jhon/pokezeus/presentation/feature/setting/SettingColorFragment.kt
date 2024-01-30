@@ -1,7 +1,6 @@
 package solis.jhon.pokezeus.presentation.feature.setting
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -31,11 +30,9 @@ class SettingColorFragment : Fragment() {
         binding.apply {
             cpvBackgroundColor.setOnColorChangedListener { selectedColor ->
                 backgroundColorSelected = selectedColor
-                Log.i("Selected Color: ", "$selectedColor")
             }
             cpvInitialsColor.setOnColorChangedListener { selectedColor ->
                 initialsColorSelected = selectedColor
-                Log.i("Selected Color: ", "$selectedColor")
             }
             btnContinue.setOnClickListener {
                 findNavController().navigate(R.id.actionSettingFragmentToPokemonListFragment, bundleOf("backgroundColor" to backgroundColorSelected, "initialsColor" to initialsColorSelected))

@@ -4,5 +4,5 @@ data class PokemonModel (
     val name : String?,
     val url: String?,
     val image: String?,
-    val favorite: Boolean
+    var favorite: Boolean
 )
