@@ -109,7 +109,7 @@ class PokemonDetailFragment(
 
     private fun setupViews(binding: FragmentPokemonDetailBinding) {
         var backgroundColor = context?.getColor(R.color.md_theme_primaryContainer)
-        if(backgroundColorSelected > 0) {
+        if(backgroundColorSelected != 0) {
             backgroundColor = backgroundColorSelected
         }
         backgroundColor?.let { binding.cvDetail.setBackgroundColor(it) }
@@ -133,7 +133,7 @@ class PokemonDetailFragment(
             } else {
                 var colorInitials = context?.getColor(R.color.md_theme_primary)
 
-                if (initialsColorSelected > 0) {
+                if (initialsColorSelected != 0) {
                     colorInitials = initialsColorSelected
                 }
 
